@@ -2,20 +2,8 @@
   "name": "labubu-website",
   "version": "1.0.0",
   "description": "Labubu Wallpaper Website",
-  "main": "index.html",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "resend": "^3.2.0",
     "@upstash/redis": "^1.25.1"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0"
   }
 }
