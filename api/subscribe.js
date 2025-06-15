@@ -1,13 +1,6 @@
 import { Resend } from 'resend';
-import { Redis } from '@upstash/redis';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// 初始化 Upstash Redis 客户端
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-});
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -31,27 +24,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 检查邮箱是否已经存在
-    const existingEmail = await redis.get(`email:${email}`);
-    
-    if (!existingEmail) {
-      // 如果邮箱不存在，保存到数据库
-      const timestamp = new Date().toISOString();
-      await redis.set(`email:${email}`, {
-        email: email,
-        subscribedAt: timestamp,
-        status: 'active'
-      });
-      
-      // 同时添加到邮箱列表中（用于导出）
-      await redis.sadd('subscribers', email);
-      
-      console.log(`New subscriber saved: ${email} at ${timestamp}`);
-    } else {
-      console.log(`Email already exists: ${email}`);
-    }
+    // 暂时只记录到控制台，不使用数据库
+    console.log('New subscriber:', email, new Date().toISOString());
 
-    // 发送邮件（无论是否已存在都发送）
+    // 发送邮件
     const { data, error } = await resend.emails.send({
       from: 'Labubu Wallpaper <hello@labubuwallpaper.shop>',
       to: [email],
@@ -74,19 +50,6 @@ export default async function handler(req, res) {
               点击下载您的壁纸包
             </a>
           </div>
-          
-          <h2 style="color: #ff6b9d;">📱 壁纸预览</h2>
-          <div style="text-align: center; margin: 20px 0;">
-            <img src="https://i.imgur.com/your_labubu_wallpaper_1.jpg" alt="Labubu Wallpaper 1" style="max-width: 200px; margin: 10px; border-radius: 10px;">
-            <img src="https://i.imgur.com/your_labubu_wallpaper_2.jpg" alt="Labubu Wallpaper 2" style="max-width: 200px; margin: 10px; border-radius: 10px;">
-          </div>
-          
-          <h2 style="color: #ff6b9d;">🔧 如何设置壁纸</h2>
-          <ul style="font-size: 14px; line-height: 1.6;">
-            <li><strong>iPhone:</strong> 设置 → 壁纸 → 选择新壁纸 → 相机胶卷</li>
-            <li><strong>Android:</strong> 长按桌面 → 壁纸 → 我的照片</li>
-            <li><strong>电脑:</strong> 右键桌面 → 个性化 → 背景</li>
-          </ul>
           
           <p style="font-size: 14px; color: #666; text-align: center; margin-top: 30px;">
             如有任何问题 ，请随时联系我们！<br>
