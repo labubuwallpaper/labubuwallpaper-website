@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
         .gradient-bg {
-            background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100% );
+            background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100%  );
         }
         .card-blur {
             backdrop-filter: blur(10px);
@@ -57,7 +57,7 @@
                 <div class="text-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800 mb-2">Get Your Free Wallpapers</h2>
                     <p class="text-gray-600">
-                        Enter your email and we'll send you a curated collection of Labubu wallpapers
+                        Enter your email and device type to get optimized Labubu wallpapers
                     </p>
                 </div>
                 
@@ -69,6 +69,18 @@
                         required
                         class="w-full h-12 px-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
+                    
+                    <!-- 新增设备选择 -->
+                    <select
+                        id="device-select"
+                        required
+                        class="w-full h-12 px-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                    >
+                        <option value="">选择您的设备类型</option>
+                        <option value="iphone">📱 iPhone</option>
+                        <option value="android">🤖 Android</option>
+                    </select>
+                    
                     <button 
                         type="submit" 
                         id="submit-btn"
@@ -124,7 +136,7 @@
                 Your Labubu wallpaper collection is on its way! 🎉
             </p>
             <p class="text-gray-600 mb-6">
-                We've sent you a beautiful collection of Labubu wallpapers. Don't forget to check your spam folder!
+                We've sent you a beautiful collection of Labubu wallpapers optimized for your device. Don't forget to check your spam folder!
             </p>
             <button 
                 id="get-more-btn"
@@ -142,6 +154,7 @@
         // Form handling
         const form = document.getElementById('email-form');
         const emailInput = document.getElementById('email-input');
+        const deviceSelect = document.getElementById('device-select');
         const submitBtn = document.getElementById('submit-btn');
         const mainContent = document.getElementById('main-content');
         const successContent = document.getElementById('success-content');
@@ -151,7 +164,12 @@
             e.preventDefault();
             
             const email = emailInput.value.trim();
-            if (!email) return;
+            const deviceType = deviceSelect.value;
+            
+            if (!email || !deviceType) {
+                alert('请填写邮箱并选择设备类型');
+                return;
+            }
 
             // Show loading state
             submitBtn.disabled = true;
@@ -164,7 +182,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email }),
+                    body: JSON.stringify({ email, deviceType }),
                 });
 
                 if (response.ok) {
@@ -172,6 +190,7 @@
                     mainContent.classList.add('hidden');
                     successContent.classList.remove('hidden');
                     emailInput.value = '';
+                    deviceSelect.value = '';
                 } else {
                     alert('Something went wrong. Please try again.');
                 }
