@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Labubu壁纸下载 - Free Dynamic Wallpapers</title>
+    <meta name="description" content="下载专为Android优化的Labubu动态壁纸，MP4格式支持动画效果">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #dcfce7 0%, #dbeafe 50%, #fce7f3 100% );
+        }
+        .card-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-16">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                🤖 Android Labubu壁纸
+            </h1>
+            <p class="text-xl text-gray-600 mb-6">
+                专为Android优化的动态壁纸，MP4格式支持流畅动画
+            </p>
+            <div class="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="play" class="w-4 h-4"></i>
+                    <span>动态MP4格式</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>高清画质</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="heart" class="w-4 h-4"></i>
+                    <span>完全免费</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Download All Button -->
+        <div class="text-center mb-12">
+            <button 
+                onclick="downloadAll()"
+                class="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+            >
+                <i data-lucide="download" class="w-5 h-5 inline mr-2"></i>
+                一键下载全部壁纸
+            </button>
+            <p class="text-sm text-gray-500 mt-2">包含所有动态MP4格式壁纸</p>
+        </div>
+
+        <!-- Individual Downloads -->
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">单独下载</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="wallpaper-grid">
+                <!-- 壁纸项目将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="max-w-2xl mx-auto mt-16">
+            <div class="card-blur rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i data-lucide="info" class="w-5 h-5 mr-2 text-green-500"></i>
+                    使用说明
+                </h3>
+                <div class="space-y-3 text-gray-600">
+                    <p><strong>1. 下载：</strong> 点击下载按钮保存到手机</p>
+                    <p><strong>2. 设置：</strong> 设置 → 壁纸 → 动态壁纸</p>
+                    <p><strong>3. 应用推荐：</strong> 使用Video Live Wallpaper等应用设置</p>
+                    <p><strong>4. 格式：</strong> MP4格式，支持循环播放</p>
+                    <p><strong>5. 兼容性：</strong> 支持Android 7.0及以上系统</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Recommendations -->
+        <div class="max-w-2xl mx-auto mt-8">
+            <div class="card-blur rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i data-lucide="smartphone" class="w-5 h-5 mr-2 text-blue-500"></i>
+                    推荐应用
+                </h3>
+                <div class="space-y-2 text-gray-600">
+                    <p>• <strong>Video Live Wallpaper</strong> - 免费，支持MP4格式</p>
+                    <p>• <strong>KLWP Live Wallpaper</strong> - 功能强大的动态壁纸应用</p>
+                    <p>• <strong>Video Wallpaper</strong> - 简单易用的视频壁纸工具</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-12">
+            <a 
+                href="/"
+                class="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
+            >
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>返回首页</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // 壁纸文件列表（根据您上传的文件调整）
+        const wallpapers = [
+            { name: 'Labubu动态壁纸 1', file: 'labubu-android-1.mp4' },
+            { name: 'Labubu动态壁纸 2', file: 'labubu-android-2.mp4' },
+            { name: 'Labubu动态壁纸 3', file: 'labubu-android-3.mp4' },
+            // 根据您实际上传的文件数量和名称调整
+        ];
+
+        // 生成壁纸网格
+        function generateWallpaperGrid() {
+            const grid = document.getElementById('wallpaper-grid');
+            
+            wallpapers.forEach((wallpaper, index) => {
+                const item = document.createElement('div');
+                item.className = 'card-blur rounded-lg p-4 shadow-lg';
+                item.innerHTML = `
+                    <div class="aspect-[9/16] bg-gradient-to-br from-green-200 to-blue-200 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden">
+                        <span class="text-4xl">🎬</span>
+                        <div class="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded">
+                            MP4
+                        </div>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">${wallpaper.name}</h4>
+                    <button 
+                        onclick="downloadFile('${wallpaper.file}')"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition-colors"
+                    >
+                        <i data-lucide="download" class="w-4 h-4 inline mr-1"></i>
+                        下载
+                    </button>
+                `;
+                grid.appendChild(item);
+            });
+            
+            // 重新初始化图标
+            lucide.createIcons();
+        }
+
+        // 下载单个文件
+        function downloadFile(filename) {
+            const link = document.createElement('a');
+            link.href = filename;
+            link.download = filename;
+            link.click();
+        }
+
+        // 一键下载全部
+        function downloadAll() {
+            wallpapers.forEach((wallpaper, index) => {
+                setTimeout(() => {
+                    downloadFile(wallpaper.file);
+                }, index * 500); // 间隔500ms下载，避免浏览器阻止
+            });
+        }
+
+        // 页面加载完成后生成网格
+        document.addEventListener('DOMContentLoaded', generateWallpaperGrid);
+    </script>
+</body>
+</html>
 
