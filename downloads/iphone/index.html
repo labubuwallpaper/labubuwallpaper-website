@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPhone Labubu壁纸下载 - Free Live Photos</title>
+    <meta name="description" content="下载专为iPhone优化的Labubu Live Photo壁纸，支持动态效果">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #e0e7ff 100% );
+        }
+        .card-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-16">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                📱 iPhone Labubu壁纸
+            </h1>
+            <p class="text-xl text-gray-600 mb-6">
+                专为iPhone优化的Live Photo壁纸，支持动态效果
+            </p>
+            <div class="flex items-center justify-center space-x-4 text-sm text-gray-500">
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="smartphone" class="w-4 h-4"></i>
+                    <span>Live Photo格式</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>原始画质</span>
+                </span>
+                <span class="flex items-center space-x-1">
+                    <i data-lucide="heart" class="w-4 h-4"></i>
+                    <span>完全免费</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Download All Button -->
+        <div class="text-center mb-12">
+            <button 
+                onclick="downloadAll()"
+                class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-all duration-200"
+            >
+                <i data-lucide="download" class="w-5 h-5 inline mr-2"></i>
+                一键下载全部壁纸
+            </button>
+            <p class="text-sm text-gray-500 mt-2">包含所有Live Photo格式壁纸</p>
+        </div>
+
+        <!-- Individual Downloads -->
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">单独下载</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="wallpaper-grid">
+                <!-- 壁纸项目将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="max-w-2xl mx-auto mt-16">
+            <div class="card-blur rounded-lg p-6 shadow-lg">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                    <i data-lucide="info" class="w-5 h-5 mr-2 text-blue-500"></i>
+                    使用说明
+                </h3>
+                <div class="space-y-3 text-gray-600">
+                    <p><strong>1. 下载：</strong> 点击下载按钮保存到相册</p>
+                    <p><strong>2. 设置：</strong> 设置 → 壁纸 → 选择新壁纸</p>
+                    <p><strong>3. Live Photo：</strong> 长按屏幕查看动态效果</p>
+                    <p><strong>4. 兼容性：</strong> 支持iPhone 6s及以上机型</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="text-center mt-12">
+            <a 
+                href="/"
+                class="inline-flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
+            >
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>返回首页</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // 壁纸文件列表（根据您上传的文件调整）
+        const wallpapers = [
+            { name: 'Labubu Live 1', file: 'labubu-live-1.heic' },
+            { name: 'Labubu Live 2', file: 'labubu-live-2.heic' },
+            { name: 'Labubu Live 3', file: 'labubu-live-3.heic' },
+            // 根据您实际上传的文件数量和名称调整
+        ];
+
+        // 生成壁纸网格
+        function generateWallpaperGrid() {
+            const grid = document.getElementById('wallpaper-grid');
+            
+            wallpapers.forEach((wallpaper, index) => {
+                const item = document.createElement('div');
+                item.className = 'card-blur rounded-lg p-4 shadow-lg';
+                item.innerHTML = `
+                    <div class="aspect-[9/16] bg-gradient-to-br from-pink-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center">
+                        <span class="text-4xl">🎨</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 mb-2">${wallpaper.name}</h4>
+                    <button 
+                        onclick="downloadFile('${wallpaper.file}')"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors"
+                    >
+                        <i data-lucide="download" class="w-4 h-4 inline mr-1"></i>
+                        下载
+                    </button>
+                `;
+                grid.appendChild(item);
+            });
+            
+            // 重新初始化图标
+            lucide.createIcons();
+        }
+
+        // 下载单个文件
+        function downloadFile(filename) {
+            const link = document.createElement('a');
+            link.href = filename;
+            link.download = filename;
+            link.click();
+        }
+
+        // 一键下载全部
+        function downloadAll() {
+            wallpapers.forEach((wallpaper, index) => {
+                setTimeout(() => {
+                    downloadFile(wallpaper.file);
+                }, index * 500); // 间隔500ms下载，避免浏览器阻止
+            });
+        }
+
+        // 页面加载完成后生成网格
+        document.addEventListener('DOMContentLoaded', generateWallpaperGrid);
+    </script>
+</body>
+</html>
 
